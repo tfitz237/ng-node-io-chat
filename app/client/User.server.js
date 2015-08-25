@@ -3,10 +3,10 @@
 */
 function User(io,client) {
     var user = this;
-    
+    var client;
     function init() {
         // variables
-        user.client = client;
+        client = client;
         user.id = client.id;
         
         
@@ -19,7 +19,7 @@ function User(io,client) {
     
     // Send message
     function send(data) {
-        if (typeof data === "string") {
+        if (typeof data == "string") {
             client.broadcast.emit('chat message', {'msg': data, 'id': user.id});
         }
         else if (typeof data === "object"){

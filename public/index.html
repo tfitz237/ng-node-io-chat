@@ -1,30 +1,65 @@
 <!doctype html>
-<html>
+<html ng-app="app">
   <head>
     <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; margin-right: .5%; }
-      #to { width: 20%; }
-      #m { width: 69%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
+    <link rel="stylesheet" href="lib/angular-material/angular-material.min.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
   </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="" id="formMessage">
-      <input id="to" autocomplete="off" />
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="socketio/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script src="app/User.client.js"></script>
-    <script src="app/events.client.js"></script>
+  <body layout="column" ng-controller="ChatCtrl as vm">
+    <md-toolbar layout="row">
+      <div class="md-toolbar-tools">
+        <md-button ng-click="vm.toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+          <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
+        </md-button>
+        <h1>chat</h1>
+      </div>
+    </md-toolbar>
+    <div layout="row" flex>
+        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+          Users: <span ng-bind="vm.userCount"></span>
+          <ul>
+            <li ng-repeat="user in vm.users"><span ng-bind="user.id"></span></li>
+          </ul>
+        </md-sidenav>
+        <div layout="column" flex id="content">
+            <md-content layout="column" flex class="md-padding">
+              <ul id="messages">
+                <li ng-repeat="message in vm.messages"><<a href="#" ng-bind="message.name"></a>> <span ng-bind="message.message"></span></li>
+              </ul>
+            </md-content>
+            <md-content layout="row">
+                <md-input-container flex="25">
+                  <label>To</label>
+                  <input type="text" ng-model="vm.to" autocomplete="off">
+                </md-input-container>
+                  <md-input-container flex>
+                      <label>Message</label>
+                      <input type="text" ng-model="vm.msg" autocomplete="off" required ng-enter="vm.sendMessage()">
+                    </md-input-container>
+                  <md-button ng-click="vm.sendMessage()">Send</md-button>
+            </md-content>
+        </div>
+    </div>
+   
+    <!-- Libraries -->
+    <script type="text/javascript" src="socketio/socket.io.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="lib/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="lib/angular-aria/angular-aria.min.js"></script>
+    <script type="text/javascript" src="lib/angular-material/angular-material.min.js"></script>
+    
+    
+ 
+    <script type="text/javascript" src="app/app.module.js"></script>
+    <script type="text/javascript" src="app/core/app.core.module.js"></script>
+    <script type="text/javascript" src="app/chat/app.chat.module.js"></script>
+    <script type="text/javascript" src="app/user/app.user.module.js"></script>
+    
+    <script type="text/javascript" src="app/user/app.user.service.js"></script>
+    <script type="text/javascript" src="app/core/app.core.directive.js"></script>
+    
+    <script type="text/javascript" src="app/chat/app.chat.controller.js"></script>
     
      
 </script>
