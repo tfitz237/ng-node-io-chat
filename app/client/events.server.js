@@ -34,7 +34,11 @@ function clientSocket(io) {
         
         client.on('chat message', usr[client.id].send);
         
-        
+        client.on('user set', function(d) {
+            console.log('setting user variable: ' +d.vari);
+            usr[client.id].set(d.vari,d.val);
+            userList();
+        });
     }
 }
 

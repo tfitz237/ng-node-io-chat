@@ -18,13 +18,13 @@
         <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
           Users: <span ng-bind="vm.userCount"></span>
           <ul>
-            <li ng-repeat="user in vm.users"><span ng-bind="user.id"></span></li>
+            <li ng-repeat="user in vm.users"><a href="#" ng-click="vm.clickName(user.name)" ng-bind="user.name"></a></li>
           </ul>
         </md-sidenav>
         <div layout="column" flex id="content">
             <md-content layout="column" flex class="md-padding">
               <ul id="messages">
-                <li ng-repeat="message in vm.messages"><<a href="#" ng-bind="message.name"></a>> <span ng-bind="message.message"></span></li>
+                <li ng-repeat="message in vm.messages"><<a href="#" ng-click="vm.clickName(message.name)" ng-bind="message.name"></a>> <span ng-bind="message.message"></span></li>
               </ul>
             </md-content>
             <md-content layout="row">

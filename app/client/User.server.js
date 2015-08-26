@@ -6,7 +6,6 @@ function User(io,client) {
     var client;
     function init() {
         // variables
-        client = client;
         user.id = client.id;
         
         
