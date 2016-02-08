@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="lib/angular-material/angular-material.min.css" type="text/css" />
     <link rel="stylesheet" href="style.css" type="text/css" />
   </head>
-  <body layout="column" ng-controller="ChatCtrl as vm">
+  <body layout="column" ng-controller="ChatCtrl as ctrl">
     <md-toolbar layout="row">
       <div class="md-toolbar-tools">
-        <md-button ng-click="vm.toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+        <md-button ng-click="ctrl.toggleSidenav('left')" hide-gt-sm class="md-icon-button">
           <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
         </md-button>
         <h1>chat</h1>
@@ -16,27 +16,34 @@
     </md-toolbar>
     <div layout="row" flex>
         <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-          Users: <span ng-bind="vm.userCount"></span>
+          Users: <span ng-bind="ctrl.userCount"></span>
           <ul>
-            <li ng-repeat="user in vm.users"><a href="#" ng-click="vm.clickName(user.name)" ng-bind="user.name"></a></li>
+            <li ng-repeat="user in ctrl.users"><a href="#" ng-click="ctrl.clickName(user.name)" ng-bind="user.name"></a></li>
           </ul>
         </md-sidenav>
         <div layout="column" flex id="content">
             <md-content layout="column" flex class="md-padding">
-              <ul id="messages">
-                <li ng-repeat="message in vm.messages"><<a href="#" ng-click="vm.clickName(message.name)" ng-bind="message.name"></a>> <span ng-bind="message.message"></span></li>
-              </ul>
+              <md-list id="messages">
+                <md-list-item ng-repeat="message in ctrl.messages" class="md-2-line">
+                  <div class="md-list-item-text">
+                  <h3><a href="#" ng-click="ctrl.clickName(message.name)" ng-bind="message.from" alt=""></a></h3>
+                  <span ng-bind="message.message"></span>
+                  </div>
+                  <md-tooltip md-delay="700">{{message.sentAt | date:'MM/dd/yy @ hh:mma'}}</md-tooltip>
+
+                </md-list-item>
+              </md-list>
             </md-content>
             <md-content layout="row">
                 <md-input-container flex="25">
                   <label>To</label>
-                  <input type="text" ng-model="vm.to" autocomplete="off">
+                  <input type="text" ng-model="ctrl.to" autocomplete="off">
                 </md-input-container>
                   <md-input-container flex>
                       <label>Message</label>
-                      <input type="text" ng-model="vm.msg" autocomplete="off" required ng-enter="vm.sendMessage()">
+                      <input type="text" ng-model="ctrl.msg" autocomplete="off" required ng-enter="ctrl.sendMessage()">
                     </md-input-container>
-                  <md-button ng-click="vm.sendMessage()">Send</md-button>
+                  <md-button ng-click="ctrl.sendMessage()">Send</md-button>
             </md-content>
         </div>
     </div>

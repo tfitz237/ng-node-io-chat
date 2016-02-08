@@ -18,11 +18,11 @@ function User(io,client) {
     
     // Send message
     function send(data) {
-        if (typeof data == "string") {
-            client.broadcast.emit('chat message', {'msg': data, 'id': user.id});
-        }
-        else if (typeof data === "object"){
-            client.broadcast.to(data.to).emit('chat message',{'msg': data.message, 'id': user.id});
+        data.id = user.id;
+        if(typeof data.to === "undefined") {
+            client.broadcast.emit('chat message', data );
+        } else {
+            client.broadcast.to(data.to).emit('chat message',data);
         }
         
     }

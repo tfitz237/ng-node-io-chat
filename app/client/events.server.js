@@ -9,26 +9,20 @@ function clientSocket(io) {
     var self = this;
     self.connection = connection;
 
-    function userList() {
+    function updateUserList() {
         userCount = Object.keys(usr).length;
         io.emit('user list', {'userCount': userCount, 'users': usr});
     }
     
-    
     function connection(client) {
-        
-       
-        // Create user based on client
+        // Create User based on client
         usr[client.id] = new User(io, client);
-        userList();
-       
-
+        updateUserList();
         console.log('usr[' + usr[client.id].id + '] connected');
         
         client.on('disconnect', function(){
             delete usr[client.id];
-            userList();
-            
+            updateUserList();
             console.log('user disconnected');
         });
         
@@ -37,7 +31,7 @@ function clientSocket(io) {
         client.on('user set', function(d) {
             console.log('setting user variable: ' +d.vari);
             usr[client.id].set(d.vari,d.val);
-            userList();
+            updateUserList();
         });
     }
 }

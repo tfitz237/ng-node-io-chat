@@ -18,15 +18,14 @@
             }
     
             function send(message,to) {
-                if(typeof to === "undefined") {
-                    user.socket.emit('chat message', message);
-                }
-                else {
-                    user.socket.emit('chat message', {'message': message, 'to': to});
-                }
-            
-                // Clean up
-                return {'name': user.name, 'message': message };
+                var data = {
+                    message: message,
+                    to:to,
+                    sentAt: new Date()
+                };
+                user.socket.emit('chat message', data);
+                data.from = user.name;
+                return data;
             }
             
             function set(vari,val) {

@@ -8,32 +8,32 @@
         ChatCtrl.$inject = ['$scope', 'User', '$mdSidenav', '$filter'];
         
         function ChatCtrl($scope, User, $mdSidenav, $filter) {
-            var vm = this;
+            var ctrl = this;
             var socket = io();
             var user;
             socket.on('connect', function() {
                 User.init(socket);
                 var username = prompt("Please enter your name");
                 User.set('name',username);
-                vm.messages = [];
-                vm.sendMessage = sendMessage;
-                vm.toggleSidenav = toggleSidenav;
-                vm.sendPM = sendPM;
-                vm.clickName = clickName;
+                ctrl.messages = [];
+                ctrl.sendMessage = sendMessage;
+                ctrl.toggleSidenav = toggleSidenav;
+                ctrl.sendPM = sendPM;
+                ctrl.clickName = clickName;
             });
               
             function sendMessage() {
-                var message;
-                if(vm.msg.length > 0) {
-                    if(typeof vm.to !== "undefined") {
-                        var to = findInObject(vm.users, 'name', vm.to);
-                        console.log(to.id);
-                        message = User.send(vm.msg,to.id); 
+                var data;
+                if(ctrl.msg.length > 0) {
+                    if(typeof ctrl.to !== "undefined") {
+                        var to = findInObject(ctrl.users, 'name', ctrl.to);
+                        data = User.send(ctrl.msg,to.id); 
+                    } else {
+                        data = User.send(ctrl.msg,ctrl.to);
                     }
-                    else message = User.send(vm.msg,vm.to);
-                vm.messages.push(message);
-                vm.msg = undefined;
-                vm.to = undefined;
+                ctrl.messages.push(data);
+                ctrl.msg = undefined;
+                ctrl.to = undefined;
                 }
                 return false;
             }
@@ -43,36 +43,36 @@
             }
               
             function sendPM(id) {
-                vm.to = id;
+                ctrl.to = id;
             }  
               
               
             socket.on('chat message', function(data){
-                vm.messages.push({'name': vm.users[data.id].name, 'message': data.msg});
+                data.name = ctrl.users[data.id].name;
+                ctrl.messages.push(data);
                 $scope.$apply();
             });
               
             socket.on('user list', function(data){
-                vm.userCount = data.userCount;
-                vm.users = data.users;
+                ctrl.userCount = data.userCount;
+                ctrl.users = data.users;
                 $scope.$apply();
             });
             
             function clickName(name) {
                 if(User.get('name') == name)  {
                     var newname = prompt("New name:");
-                    changeUserName(newname);
+                    User.set('name', newname);
                 
                     
-                } else 
+                } else {
                     sendPM(name);
+                }
                 
             
             }
             
-            function changeUserName(name) {
-                User.set('name', name);
-            }
+
         
             
             

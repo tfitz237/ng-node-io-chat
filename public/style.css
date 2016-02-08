@@ -1,4 +1,7 @@
 
-      #messages { list-style-type: none; margin: 0; padding: 0; background: #fff;}
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+      #messages md-list-item:nth-child(odd) { background: #eee; }	
+      #messages md-list-item.md-2-line {
+      		min-height:36px;
+      		padding-top: 2px;
+      		padding-bottom: 2px;
+      }
